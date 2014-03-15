@@ -1,0 +1,1 @@
+default["omniorb"]["version"] = "4.1.7"

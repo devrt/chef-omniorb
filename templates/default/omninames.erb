@@ -1,0 +1,76 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:          omninames
+# Required-Start:    $local_fs $remote_fs $network $syslog
+# Required-Stop:     $local_fs $remote_fs $network $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: starts the omniNames name server
+# Description:       starts omniNames using start-stop-daemon
+### END INIT INFO
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON=/usr/local/bin/omniNames
+DAEMON_OPTS="-start -always -errlog /var/log/omninames-error.log -logdir /var/log"
+NAME=omniNames
+DESC="omniNames name server"
+PID=/var/run/$NAME.pid
+
+test -x $DAEMON || exit 0
+
+<% if ["debian", "ubuntu"].include?(@platform) %>
+. /lib/lsb/init-functions
+
+do_start() {
+    start-stop-daemon --start --quiet --pidfile $PID --background --exec $DAEMON -- $DAEMON_OPTS
+}
+
+do_stop() {
+    start-stop-daemon --stop --quiet --pidfile $PID --exec $DAEMON
+}
+<% else %>
+. /etc/rc.d/init.d/functions
+
+do_start() {
+    $DAEMON $DAEMON_OPTS &
+}
+
+do_stop() {
+    killproc $DAEMON
+}
+<% end %>
+
+case "$1" in
+    start)
+        echo -n "Starting $DESC: "
+        do_start
+        echo "$NAME."
+        ;;
+    
+    stop)
+        echo -n "Stopping $DESC: "
+        do_stop
+        echo "$NAME."
+        ;;
+    
+    restart|reload|force-reload)
+        echo -n "Restarting $DESC: "
+        do_stop
+        sleep 1
+        do_start
+        echo "$NAME."
+        ;;
+    
+    try-restart|status)
+        echo "Unimplemented feature"
+        exit 3
+        ;;
+    
+    *)
+        echo "Usage: $NAME {start|stop|restart|force-reload}" >&2
+        exit 2
+        ;;
+esac
+
+exit 0
