@@ -3,6 +3,8 @@ omniORB Cookbook
 
 This cookbook will install omniORB a robust high performance CORBA ORB for C++.
 
+[![Build Status](http://ci.devrt.tk/job/chef-omniorb/badge/icon)](http://ci.devrt.tk/job/chef-omniorb/)
+
 Requirements
 ------------
 
