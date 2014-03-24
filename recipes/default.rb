@@ -22,16 +22,16 @@ include_recipe 'python'
 
 install_path = '/usr/local/bin/omniidl'
 
-remote_file "#{Chef::Config[:file_cache_path]}/omniORB-#{node["omniorb"]["version"]}.tar.bz2" do
-  source "http://downloads.sourceforge.net/project/omniorb/omniORB/omniORB-#{node["omniorb"]["version"]}/omniORB-#{node["omniorb"]["version"]}.tar.bz2"
+remote_file "#{Chef::Config[:file_cache_path]}/omniORB-#{node['omniorb']['version']}.tar.bz2" do
+  source "http://downloads.sourceforge.net/project/omniorb/omniORB/omniORB-#{node['omniorb']['version']}/omniORB-#{node["omniorb"]["version"]}.tar.bz2"
   not_if { ::File.exists?(install_path) }
 end
 
 bash 'compile_omniorb' do
   cwd Chef::Config['file_cache_path']
   code <<-EOH
-      tar xvfi omniORB-#{node["omniorb"]["version"]}.tar.bz2
-      cd omniORB-#{node["omniorb"]["version"]}
+      tar xvfi omniORB-#{node['omniorb']['version']}.tar.bz2
+      cd omniORB-#{node['omniorb']['version']}
       ./configure
       make clean && make && make install
       ldconfig

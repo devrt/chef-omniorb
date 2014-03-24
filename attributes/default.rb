@@ -1,1 +1,1 @@
-default["omniorb"]["version"] = "4.1.7"
+default['omniorb']['version'] = '4.1.7'

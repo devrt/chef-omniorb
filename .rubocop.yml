@@ -8,6 +8,8 @@ Encoding:
   Enabled: false
 HashSyntax:
   Enabled: false
+BracesAroundHashParameters:
+  Enabled: false
 LineLength:
   Enabled: false
 MethodLength:
