@@ -45,6 +45,7 @@ supervisor_service 'omniNames' do
   command '/usr/local/bin/omniNames -start -always -logdir /tmp'
   autostart true
   autorestart true
+  priority 100
   user 'nobody'
 end
 
