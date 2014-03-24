@@ -19,6 +19,7 @@
 
 include_recipe 'build-essential'
 include_recipe 'python'
+include_recipe 'supervisor'
 
 install_path = '/usr/local/bin/omniidl'
 
@@ -39,22 +40,12 @@ bash 'compile_omniorb' do
   not_if { ::File.exists?(install_path) }
 end
 
-service 'omninames' do
-  supports :restart => true, :start => true, :stop => true, :reload => true
-  action :nothing
-end
-
-template 'omniorb' do
-  path '/etc/init.d/omninames'
-  source 'omninames.erb'
-  owner 'root'
-  group 'root'
-  mode '0755'
-  variables({
-              :platform => node['platform']
-            })
-  notifies :enable, 'service[omninames]'
-  notifies :start, 'service[omninames]'
+supervisor_service 'omniNames' do
+  action :enable
+  command '/usr/local/bin/omniNames -start -always -logdir /tmp'
+  autostart true
+  autorestart true
+  user 'nobody'
 end
 
 if node['platform'] == 'centos'
